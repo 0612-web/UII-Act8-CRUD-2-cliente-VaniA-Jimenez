@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Borrado</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 500px; }
+        .advertencia { 
+            background-color: #fff3cd; 
+            border: 1px solid #ffeaa7; 
+            color: #856404; 
+            padding: 15px; 
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .btn { 
+            padding: 10px 15px; 
+            text-decoration: none; 
+            color: white; 
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .confirmar { background-color: #DC3545; }
+        .confirmar:hover { background-color: #c82333; }
+        .cancelar { background-color: #6c757d; }
+        .cancelar:hover { background-color: #5a6268; }
+        .info-cliente {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Confirmar Borrado</h1>
+        
+        <div class="advertencia">
+            ⚠️ <strong>Advertencia:</strong> Esta acción no se puede deshacer.
+        </div>
+        
+        <div class="info-cliente">
+            <h2>¿Estás seguro de borrar a {{ cliente.nombre }}?</h2>
+            <p><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
+            {% if cliente.email %}
+            <p><strong>Email:</strong> {{ cliente.email }}</p>
+            {% endif %}
+            {% if cliente.direccion %}
+            <p><strong>Dirección:</strong> {{ cliente.direccion }}</p>
+            {% endif %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn confirmar">Sí, Borrar Definitivamente</button>
+            <a href="/" class="btn cancelar">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
