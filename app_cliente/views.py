@@ -38,3 +38,23 @@ def borrar_cliente(request, id):
         cliente.delete()
         return redirect('inicio')
     return render(request, 'app_cliente/borrar_cliente.html', {'cliente': cliente})
+
+def agregar_cliente(request):
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        direccion = request.POST.get('direccion', '')
+        telefono = request.POST['telefono']
+        email = request.POST.get('email', '')
+        imagen = request.FILES.get('imagen')  # ¡IMPORTANTE: request.FILES!
+        
+        print(f"Imagen recibida: {imagen}")  # Debug
+        
+        Cliente.objects.create(
+            nombre=nombre,
+            direccion=direccion,
+            telefono=telefono,
+            email=email,
+            imagen=imagen
+        )
+        return redirect('inicio')
+    return render(request, 'app_cliente/agregar_cliente.html')

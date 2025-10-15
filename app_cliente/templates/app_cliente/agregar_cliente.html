@@ -2,58 +2,123 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Agregar Cliente</title>
+    <title>Agregar Cliente - Tienda de Ropa</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { max-width: 400px; }
-        label { display: block; margin: 10px 0 5px; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        form { max-width: 400px; margin: 0 auto; }
+        label { display: block; margin: 15px 0 5px; font-weight: bold; }
         input, textarea { 
             width: 100%; 
-            padding: 8px; 
-            margin-bottom: 10px; 
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px; 
+            margin-bottom: 15px; 
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input:focus, textarea:focus {
+            border-color: #4CAF50;
+            outline: none;
         }
         button { 
-            background-color: #28A745; 
+            background: linear-gradient(135deg, #28A745, #20c997);
             color: white; 
-            padding: 10px 15px; 
+            padding: 15px 30px; 
             border: none; 
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
         }
-        button:hover { background-color: #218838; }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
         .volver { 
-            display: inline-block; 
-            margin-top: 15px; 
+            display: block;
+            text-align: center;
+            margin-top: 20px; 
             color: #007BFF; 
-            text-decoration: none; 
+            text-decoration: none;
+            font-weight: bold;
         }
-        .error { color: red; font-size: 14px; }
+        .preview-imagen {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 10px auto;
+            display: block;
+            border: 3px solid #4CAF50;
+        }
     </style>
 </head>
 <body>
-    <h1>Agregar Cliente</h1>
-    
-    <form method="post">
-        {% csrf_token %}
+    <div class="container">
+        <h1>➕ Agregar Nuevo Cliente</h1>
         
-        <!-- Método 1: Formulario manual -->
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" maxlength="50" required>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" maxlength="50" required>
+            
+            <label for="direccion">Dirección:</label>
+            <textarea id="direccion" name="direccion" maxlength="200" rows="3"></textarea>
+            
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" maxlength="10" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" maxlength="100">
+            
+            <label for="imagen">Foto del Cliente:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*">
+            <img id="preview" class="preview-imagen" style="display:none;">
+            
+            <button type="submit">💾 Guardar Cliente</button>
+        </form>
         
-        <label for="direccion">Dirección:</label>
-        <textarea id="direccion" name="direccion" maxlength="200" rows="3"></textarea>
-        
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono" maxlength="10" required>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" maxlength="100">
-        
-        <button type="submit">Guardar Cliente</button>
-    </form>
-    
-    <a href="/" class="volver">← Volver al listado</a>
+        <a href="{% url 'inicio' %}" class="volver">← Volver al listado</a>
+    </div>
+
+    <script>
+        // Vista previa de la imagen
+        document.getElementById('imagen').addEventListener('change', function(e) {
+            const preview = document.getElementById('preview');
+            const file = e.target.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
